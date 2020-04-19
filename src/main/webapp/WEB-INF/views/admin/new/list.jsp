@@ -1,8 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@include file="/common/taglib.jsp"%>
-<c:url var="APIurl" value="/api-admin-new" />
-<c:url var="NewURL" value="/admin-new" />
+<c:url var="newAPI" value="/api/new" />
+<c:url var="NewURL" value="/quan-tri/bai-viet/danh-sach" />
+<c:url var="editNewURL" value="/quan-tri/bai-viet/chinh-sua" />
+
 <!DOCTYPE html>
 <html>
 
@@ -13,8 +15,8 @@
 
 <body>
 	<div class="main-content">
-		<form action="#" id="formSubmit"
-			method="GET">
+		<form action="<c:url value='/quan-tri/bai-viet/danh-sach'/>"
+			id="formSubmit" method="GET">
 			<div class="main-content-inner">
 				<div class="breadcrumbs ace-save-state" id="breadcrumbs">
 					<ul class="breadcrumb">
@@ -26,21 +28,23 @@
 				<div class="page-content">
 					<div class="row">
 						<div class="col-xs-12">
-							 <c:if test="${not empty messageResponse}">
-									<div class="alert alert-${alert}">${messageResponse}</div>
-							</c:if> 
+							<c:if test="${not empty message}">
+								<div class="alert alert-${alert}">${message}</div>
+							</c:if>
 							<div class="widget-box table-filter">
 								<div class="table-btn-controls">
 									<div class="pull-right tableTools-container">
 										<div class="dt-buttons btn-overlap btn-group">
-											<a flag="info"
-												class="dt-button buttons-colvis btn btn-white btn-primary btn-bold"
-												data-toggle="tooltip" title='Thêm bài viết'
-												href='<c:url value="/admin-new?type=edit"/>'> <span>
-													<i class="fa fa-plus-circle bigger-110 purple"></i>
-											</span>
-											</a>
+											<c:url var="createNewURL" value="/quan-tri/bai-viet/chinh-sua"/>
+												<a flag="info"
+												   class="dt-button buttons-colvis btn btn-white btn-primary btn-bold" data-toggle="tooltip"
+												   title='Thêm bài viết' href='${createNewURL}'>
+															<span>
+																<i class="fa fa-plus-circle bigger-110 purple"></i>
+															</span>
+												</a>
 											<button id="btnDelete" type="button"
+												onclick="warningBeforeDelete()"
 												class="dt-button buttons-html5 btn btn-white btn-primary btn-bold"
 												data-toggle="tooltip" title='Xóa bài viết'>
 												<span> <i class="fa fa-trash-o bigger-110 pink"></i>
@@ -69,17 +73,20 @@
 															value="${item.id}"></td>
 														<td>${item.title}</td>
 														<td>${item.shortDescripTion}</td>
-														<td><%-- <c:url var="editURL" value="/admin-new">
-																<c:param name="type" value="edit" />
+														<td><c:url var="updateNewURL"
+																value="/quan-tri/bai-viet/chinh-sua">
 																<c:param name="id" value="${item.id}" />
-															</c:url> --%> <a class="btn btn-sm btn-primary btn-edit"
+															</c:url> <a class="btn btn-sm btn-primary btn-edit"
 															data-toggle="tooltip" title="Cập nhật bài viết"
-															href='#'><i class="fa fa-pencil-square-o"
-																aria-hidden="true"></i> </a></td>
+															href='${updateNewURL}'><i
+																class="fa fa-pencil-square-o" aria-hidden="true"></i> </a></td>
 													</tr>
 												</c:forEach>
 											</tbody>
 										</table>
+										<ul class="pagination" id="pagination"></ul>
+										<input type="hidden" value="" id="page" name="page"> <input
+											type="hidden" value="" id="limit" name="limit">
 									</div>
 								</div>
 							</div>
@@ -92,6 +99,64 @@
 	</div>
 	<!-- /.main-content -->
 	<script type="text/javascript">
+		var totalPages = $
+		{
+			model.totalPage
+		};
+		var currentPage = $
+		{
+			model.page
+		};
+		var limit = 2;
+		$(function() {
+			window.pagObj = $('#pagination').twbsPagination({
+				totalPages : totalPages, // so luong page co
+				visiblePages : 10, // so item tren mot page
+				startPage : currentPage, // page dau tien
+				onPageClick : function(event, page) {
+					if (currentPage != page) {
+						$('#limit').val(2);
+						$('#page').val(page);
+						$('#formSubmit').submit();
+					}
+				}
+			});
+		});
+
+		function warningBeforeDelete() {
+			swal({
+				title : "Xac Nhan Xoa",
+				text : "Ban co chac chan muon xoa khong!",
+				type : "warning",
+				showCancelButton : true,
+				confirmButtonClass : "btn-success",
+				cancelButtonClass : "btn-danger",
+				confirmButtonText : "Xac Nhan!",
+				cancelButtonText : "Huy Bo!"
+			}).then(
+					function(isConfirm) {
+						if (isConfirm) {
+							var ids = $('tbody input[type=checkbox]:checked').map(function() {
+										return $(this).val();
+									}).get();
+							deleteNew(ids);
+						}
+					});
+		}
+		function deleteNew(data) {
+			$.ajax({
+						url : '${newAPI}',
+						type : 'DELETE',
+						contentType : 'application/json',
+						data : JSON.stringify(data),
+						success : function(result) {
+							window.location.href = "${NewURL}?page=1&limit=2&message=delete_success" ;
+						},
+						error : function(error) {
+							window.location.href = "${NewURL}?page=1&limit=2&message=error_system" ;
+						},
+					});
+		}
 	</script>
 </body>
 

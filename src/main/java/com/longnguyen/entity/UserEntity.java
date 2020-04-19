@@ -1,65 +1,78 @@
 package com.longnguyen.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "new")
-public class UserEntity {
+@Table(name = "user")
+public class UserEntity extends BaseEntity{
 	
-	@Id //(định nghia khoa chinh va not null)
-	@GeneratedValue(strategy = GenerationType.IDENTITY) //id tự động tăng
-	private Long id;  
+	@Column(name = "username")
+	private String userName;
 	
-	@Column(name = "title")
-	private String title;
+	@Column(name = "password")
+	private String passWord;
 	
-	@Column(name = "thumbnail")
-	private String thumbnail;
+	@Column(name = "fullname", columnDefinition = "TEXT") // nếu hoa thì tự động chuyển thành thường và thêm _
+	private String fullName;
 	
-	@Column(name = "shortdescription", columnDefinition = "TEXT") // nếu hoa thì tự động chuyển thành thường và thêm _
-	private String shortDescripTion;
+	@Column(name = "status")
+	private Integer status;
 	
-	@Column(name = "content", columnDefinition = "TEXT")
-	private String content;
+	//Tạo bảng trung gian là giữa user và role 
+	@ManyToMany(fetch = FetchType.LAZY) // loading theo kiểu LAZY
+	    @JoinTable(name = "user_role",
+	        joinColumns = @JoinColumn(name = "userid"), // đứng ở entity nào thì @JoinColumn của Entity đó 
+	        inverseJoinColumns = @JoinColumn(name = "roleid")
+	    )
+	private List<RoleEntity> roles = new ArrayList<>();
 
-	public Long getId() {
-		return id;
+	public String getUserName() {
+		return userName;
 	}
 
-	public String getTitle() {
-		return title;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
+	public String getPassWord() {
+		return passWord;
 	}
 
-	public String getThumbnail() {
-		return thumbnail;
+	public void setPassWord(String passWord) {
+		this.passWord = passWord;
 	}
 
-	public void setThumbnail(String thumbnail) {
-		this.thumbnail = thumbnail;
+	public String getFullName() {
+		return fullName;
 	}
 
-	public String getShortDescripTion() {
-		return shortDescripTion;
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
 	}
 
-	public void setShortDescripTion(String shortDescripTion) {
-		this.shortDescripTion = shortDescripTion;
+	public Integer getStatus() {
+		return status;
 	}
 
-	public String getContent() {
-		return content;
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 
-	public void setContent(String content) {
-		this.content = content;
+	public List<RoleEntity> getRoles() {
+		return roles;
 	}
+
+	public void setRoles(List<RoleEntity> roles) {
+		this.roles = roles;
+	}
+	
 }

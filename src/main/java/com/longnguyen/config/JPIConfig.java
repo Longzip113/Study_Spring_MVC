@@ -60,8 +60,11 @@ public class JPIConfig {
 	
 	 Properties additionalProperties(){
 		 Properties properties = new Properties();
-			properties.setProperty("hibernate.hbm2ddl.auto", "create-drop"); // mới đầu tạo table thì dùng drop 
-			//properties.setProperty("hibernate.hbm2ddl.auto", "none"); // tạo table sau thì dùng none
+			//properties.setProperty("hibernate.hbm2ddl.auto", "update"); // mới đầu tạo table thì dùng drop 
+		 	//properties.setProperty("hibernate.hbm2ddl.auto", "create");
+			properties.setProperty("hibernate.hbm2ddl.auto", "none"); // tạo table sau thì dùng none
+			properties.setProperty("hibernate.enable_lazy_load_no_trans", "true"); // Bật tính năng lazy bên manytomany()
 			return properties;
 	 }
+	 
 }

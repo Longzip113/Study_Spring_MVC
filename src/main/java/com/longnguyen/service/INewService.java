@@ -2,8 +2,14 @@ package com.longnguyen.service;
 
 import java.util.List;
 
-import com.longnguyen.model.NewModel;
+import org.springframework.data.domain.Pageable;
+
+import com.longnguyen.dto.NewDTO;
 
 public interface INewService {
-	List<NewModel> findAll();
+	List<NewDTO> findAll(Pageable pageable);
+	int getTotalItem();
+	NewDTO findById(Long id);
+	NewDTO save(NewDTO dto);
+	void delete(Long []ids);
 }

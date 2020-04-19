@@ -15,6 +15,15 @@
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/js/all.min.js"
 	crossorigin="anonymous"></script>
+	
+	<!-- SweetAlert  -->
+	
+	<link href="<c:url value='/template/admin/sweetalert/sweetalert2.min.css' />"
+	rel="stylesheet" />
+	
+	<script
+		src="<c:url value='/template/admin/sweetalert/sweetalert2.min.js' />"></script>
+	
 </head>
 <body class="sb-nav-fixed">
 
@@ -36,6 +45,9 @@
 	</div>
 
 
+	
+	
+	<script src="<c:url value='/template/admin/js/jquery.twbsPagination.js' />" type="text/javascript"></script>
 
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js"
 		crossorigin="anonymous"></script>

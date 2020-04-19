@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+            http://www.springframework.org/schema/security
+            http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+            
+    <http auto-config="false" use-expressions="true" disable-url-rewriting="true">
+    
+    <!-- vào trang admin không báo lỗi 500  -->
+    <intercept-url pattern="/quan-tri/trang-chu" access="hasAnyRole('ADMIN')" />
+    
+    	<access-denied-handler error-page="/accessDenied" />
+        <form-login  login-page="/dang-nhap"
+                     username-parameter="j_username"
+                     password-parameter="j_password"
+                     login-processing-url="/j_spring_security_check"
+                     authentication-success-handler-ref="customSuccessHandler"
+                     authentication-failure-url="/dang-nhap?incorrectAccount"/>
+        <session-management invalid-session-url="/dang-nhap?sessionTimeout"/>
+        <logout delete-cookies="JSESSIONID"/>
+    </http>
+ 
+ 	<!--Cấu hình mã hóa mật khẩu MD5-->
+ 	<authentication-manager >
+        <authentication-provider user-service-ref="customUserDetailsService">
+        		<password-encoder ref="bcryptEncoder"/>
+        </authentication-provider>
+    </authentication-manager>
+    
+    <!-- Spring sẽ sử lý ngầm phần chuyển mã MD5 -->
+    <beans:bean id="bcryptEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+    
+    <!-- from gửi mật khẩu tai khoản về sẽ vào đây sử lý -->
+    <beans:bean id="customUserDetailsService" class="com.longnguyen.service.impl.CustomUserDetailsService" />
+    
+    <!-- Khi đăng nhập thành công sẽ vào đây sử lý Phần Authorization phân quyền webPage-->
+    <beans:bean id="customSuccessHandler" class="com.longnguyen.security.CustomSuccessHandler" />
+    
+</beans:beans>

@@ -3,15 +3,15 @@ package com.longnguyen.mapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.longnguyen.model.CategoryModel;
+import com.longnguyen.dto.CategoryDTO;
 
-public class CategoryMapper implements RowMapper<CategoryModel> {
+public class CategoryMapper implements RowMapper<CategoryDTO> {
 
 	@Override
-	public CategoryModel mapRow(ResultSet resultSet) {
+	public CategoryDTO mapRow(ResultSet resultSet) {
 
 		try {
-			CategoryModel categoryModel = new CategoryModel();
+			CategoryDTO categoryModel = new CategoryDTO();
 			categoryModel.setId(resultSet.getLong("id"));
 			categoryModel.setCode(resultSet.getString("code"));
 			categoryModel.setName(resultSet.getString("name"));

@@ -1,65 +1,50 @@
 package com.longnguyen.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "new")
-public class RoleEntity {
+@Table(name = "role")
+public class RoleEntity extends BaseEntity{
 	
-	@Id //(định nghia khoa chinh va not null)
-	@GeneratedValue(strategy = GenerationType.IDENTITY) //id tự động tăng
-	private Long id;  
+	@Column(name = "name")
+	private String name;
 	
-	@Column(name = "title")
-	private String title;
+	@Column(name = "code")
+	private String code;
+
+	//map ben use qua
+	@ManyToMany(mappedBy = "roles")
+    private List<UserEntity> user = new ArrayList<>();
 	
-	@Column(name = "thumbnail")
-	private String thumbnail;
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public List<UserEntity> getUser() {
+		return user;
+	}
+
+	public void setUser(List<UserEntity> user) {
+		this.user = user;
+	}
 	
-	@Column(name = "shortdescription", columnDefinition = "TEXT") // nếu hoa thì tự động chuyển thành thường và thêm _
-	private String shortDescripTion;
 	
-	@Column(name = "content", columnDefinition = "TEXT")
-	private String content;
-
-	public Long getId() {
-		return id;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public String getThumbnail() {
-		return thumbnail;
-	}
-
-	public void setThumbnail(String thumbnail) {
-		this.thumbnail = thumbnail;
-	}
-
-	public String getShortDescripTion() {
-		return shortDescripTion;
-	}
-
-	public void setShortDescripTion(String shortDescripTion) {
-		this.shortDescripTion = shortDescripTion;
-	}
-
-	public String getContent() {
-		return content;
-	}
-
-	public void setContent(String content) {
-		this.content = content;
-	}
 }

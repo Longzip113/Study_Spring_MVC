@@ -3,14 +3,14 @@ package com.longnguyen.mapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.longnguyen.model.NewModel;
+import com.longnguyen.dto.NewDTO;
 
-public class NewMapper implements RowMapper<NewModel> {
+public class NewMapper implements RowMapper<NewDTO> {
 
 	@Override
-	public NewModel mapRow(ResultSet resultSet) {
+	public NewDTO mapRow(ResultSet resultSet) {
 		try {
-			NewModel newModel = new NewModel();
+			NewDTO newModel = new NewDTO();
 			newModel.setId(resultSet.getLong("id"));
 			newModel.setTitle(resultSet.getString("title"));
 			newModel.setContent(resultSet.getString("content"));

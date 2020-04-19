@@ -22,8 +22,8 @@
 				<div class="collapse" id="collapseLayouts"
 					aria-labelledby="headingOne" data-parent="#sidenavAccordion">
 					<nav class="sb-sidenav-menu-nested nav">
-						<a class="nav-link" href="<c:url value='/quan-tri/bai-viet/danh-sach'/>">DS Bài viết
-						 </a><a class="nav-link" href="layout-sidenav-light.html">Light
+						<a class="nav-link" href="<c:url value='/quan-tri/bai-viet/danh-sach?page=1&limit=2'/>">DS Bài viết
+						 </a><a class="nav-link" href="#">Light
 							Sidenav</a>
 					</nav>
 				</div>
